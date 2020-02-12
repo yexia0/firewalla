@@ -41,6 +41,7 @@ let Sensor = class {
   getName() {
     return this.constructor.name
   }
+  
   setConfig(config) {
     require('util')._extend(this.config, config);
   }
@@ -89,12 +90,9 @@ let Sensor = class {
       })
 
       await this.job();
-      if (this.refreshInterval) {
-        this.timer = setInterval(async () => {
-          return this.job();
-        }, this.refreshInterval);
-      }
-
+      this.timer = setInterval(async () => {
+        return this.job();
+      }, this.refreshInterval || 3600 * 1000); // one hour by default
     })
   }
 
